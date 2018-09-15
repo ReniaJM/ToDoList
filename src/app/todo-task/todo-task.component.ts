@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {TaskService} from "../../../services/task.service";
 
 @Component({
   selector: 'app-todo-task',
@@ -7,23 +8,16 @@ import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 })
 export class TodoTaskComponent implements OnInit {
   // ten dekorator zezwala przyjmowanie o pustego tasklist danych
-  @Input()
+
   taskList=[];
-
-  @Output()
-  emitDone= new EventEmitter<string>();
-
-  @Output()
-  emitRemove = new EventEmitter<string>();
 
 
   remove(task:string){
-    this.emitRemove.emit(task)
+    this.taskService.remove(task);
   }
 
   done(task:string){
-    this.emitDone.emit(task)
-
+    this.taskService.done(task);
   }
 
   getColor():string{
@@ -31,7 +25,11 @@ export class TodoTaskComponent implements OnInit {
 
   }
 
-  constructor() { }
+  constructor(private taskService: TaskService) {
+    this.taskService.getTaskListObs().subscribe((task: Array<string>) =>{
+    this.taskList= task;
+    });
+  }
 
   ngOnInit() {
   }

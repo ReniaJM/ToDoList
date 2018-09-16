@@ -1,13 +1,15 @@
 <div *ngIf="taskList.length>0; else noTask">
   <p [ngStyle]="{color:getColor()}">zadanie do wykonania: {{taskList.length}}</p>
 <ul>
-  <li *ngFor="let task of taskList let odd=odd" [ngClass]="{'odd-li':odd === true, 'last-li':taskList.length ===1 }">
-    {{task}}
+  <li appDate [date]="task.created" *ngFor="let task of taskList | sortName let odd=odd" [ngClass]="{'odd-li':odd === true, 'last-li':taskList.length ===1 }">
+    {{task.name | transformTask: '!'}}
+    <!--wykrzyknik jest argumentem pod nazwa args? jest on opcjonlany -->
     <button type="button" class="btn btn-danger" (click)="remove(task)">usuń</button>
     <button type="button" class="btn btn-success"(click)="done(task)">zdrobione</button>
   </li>
 </ul>
 </div>
 <ng-template #noTask>
+  <!--#noTask to jest lokalna zmienna-->
   <p>brak zadań, masz wolny czas!</p>
 </ng-template>

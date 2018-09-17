@@ -8,5 +8,11 @@ import {TaskService} from "../../services/task.service";
   providers: [TaskService]
 })
 export class AppComponent {
+  constructor(private taskService: TaskService){
+
+}
+  save(){
+    this.taskService.saveTasksDB();
+  }
 
 }

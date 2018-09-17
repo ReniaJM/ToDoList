@@ -20,9 +20,9 @@ export class AddTaskComponent implements OnInit {
   ngOnInit() {
   }
   add(){
-    // to jest task typu szago interfejsu
-    const task: Task ={name: this.newTask, created: new Date()};
-    this.taskService.add(task)
+    /* to jest task typu szago interfejsu*/
+    const task: Task = ({name: this.newTask, created: new Date().toLocaleString(),isDone: false});
+    this.taskService.add(task);
     this.newTask= '';
 
   }

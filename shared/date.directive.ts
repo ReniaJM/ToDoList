@@ -6,7 +6,7 @@ import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/co
 export class DateDirective {
 // tworzymy pole, ktore bedzie przetrzymywac date, za pomoca @Inputa
   @Input()
-  private date: Date;
+  private date: string;
   // tworzenie elementu/paragraphu w ktorym bedzie wstrzykiwana data elmentem li
   private paragraph;
   // tutaj tworzymy <p> w html
@@ -19,7 +19,7 @@ export class DateDirective {
 
   @HostListener('mouseenter')
   mouseenter(eventDate: Event){
-  this.paragraph.innerHTML = this.date.toLocaleDateString();
+  this.paragraph.innerHTML = this.date;
   this.renderer.appendChild(this.el.nativeElement, this.paragraph);
     // tutaj data ma sie pokazac jak najedziemy myszką
 

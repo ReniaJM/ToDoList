@@ -2,6 +2,8 @@ import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs/index";
 import {Task} from "../models/task";
 import {HttpService} from "./http.service";
+import {AngularFireAuth} from "@angular/fire/auth";
+import {init} from "protractor/built/launcher";
 
 @Injectable()
 export class TaskService{
@@ -13,10 +15,15 @@ export class TaskService{
   private taskListObs = new BehaviorSubject<Array<Task>>([]);
   // private taskDoneObs = new BehaviorSubject<Array<Task>>(this.taskList);
   // BehaviorSubject postwał dlatego bo juz cos zostało wrzucone do listy a pozniej zasubskrybowalismy, podłaczylismy sie za popzno do naszego subjecta, observable nie wysłął juz nam ten informacji dlatego powstal ten BehaviorSubject, dlatego wtedy i tak dostamy ta ostania informcje
-  constructor(private httpService: HttpService) {
-    this.httpService.getTasks().subscribe(list =>{
-    this.taskListObs.next(list);
+  constructor(private httpService: HttpService, public angularFire: AngularFireAuth ) {
+    angularFire.authState.subscribe(user =>{
+     if(user){
+       this.init()
+     }else{
+      this.taskListObs.next([]);
+      }
     });
+  }
     // gdy nasz taskservice bedzie sie ladowal do zwraca sie do httpservice, tam wezmie metoge getTasks(), subskrybujac otrzyma ta liste tasków, ktora wrzuce do taskListObs
 
 
@@ -32,12 +39,17 @@ export class TaskService{
     // musimy dodac przy datach .toLocaleString() aby nie bylo konflikutu z interfesejsem i lokalna baza danych na chmurze
     // construktor inicjalizuje liste, ktora jest propagowna przez BehaviorSubject
     // this.taskListObs.next(taskList);
+
+
+  init(){
+    this.httpService.getTasks().subscribe(list =>{
+      this.taskListObs.next(list);
+    });
   }
 
 
-  add(task:Task){
-    const list = this.taskListObs.getValue();
-    list.push(task);
+  add(task:Array<Task>){
+    const list = this.taskListObs.getValue().concat(task);
     this.taskListObs.next(list);
   }
 

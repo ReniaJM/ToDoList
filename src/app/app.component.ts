@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../services/task.service";
+import {Router} from "@angular/router";
+import {AngularFireAuth} from "@angular/fire/auth";
+import {AuthService} from "./auth/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -8,11 +11,10 @@ import {TaskService} from "../../services/task.service";
   providers: [TaskService]
 })
 export class AppComponent {
-  constructor(private taskService: TaskService){
+  constructor(public authService: AuthService, private router: Router) {}
 
-}
-  save(){
-    this.taskService.saveTasksDB();
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['./login'])
   }
-
 }

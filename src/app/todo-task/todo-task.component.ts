@@ -40,5 +40,9 @@ export class TodoTaskComponent implements OnInit {
 
   ngOnInit() {
   }
+  save(){
+    this.taskService.saveTasksDB();
+  }
+
 
 }

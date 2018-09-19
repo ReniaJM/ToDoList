@@ -1,3 +1,5 @@
+<div class="container">
+<app-add-task></app-add-task>
 <div *ngIf="taskList.length>0; else noTask">
   <p [ngStyle]="{color:getColor()}">zadanie do wykonania: {{taskList.length}}</p>
 <ul>
@@ -13,3 +15,5 @@
   <!--#noTask to jest lokalna zmienna-->
   <p>brak zadań, masz wolny czas!</p>
 </ng-template>
+<button (click)="save()">zapisz</button>
+</div>
